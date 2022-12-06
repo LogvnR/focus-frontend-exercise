@@ -1,12 +1,12 @@
 import { Link, Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 
-import Home from './pages/Home'
-import InterstateTrade from './pages/InterstateTrade'
-import Login from './pages/Login'
-import Signup from './pages/Signup'
-import StateEconomySearch from './pages/StateEconomySearch'
-import StateSearch from './pages/StateSearch'
+import Home from './pages/Home/Home'
+import InterstateTrade from './pages/Interstate Trade/InterstateTrade'
+import Login from './pages/Login/Login'
+import Signup from './pages/Signup/Signup'
+import StateEconomySearch from './pages/State Economy/StateEconomySearch'
+import StateSearch from './pages/State Search/StateSearch'
 
 export interface User {
     id: number
