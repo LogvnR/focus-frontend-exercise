@@ -1,6 +1,9 @@
+import { useState } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
+
+import { useAxios } from '../../hooks/useAxios'
 
 const schema = z
     .object({
@@ -20,6 +23,16 @@ const schema = z
     })
 
 const Signup = () => {
+    const [username, setUsername] = useState<string>('')
+    const [password, setPassword] = useState<string>('')
+    const { error, isLoading, sendData } = useAxios({
+        method: 'post',
+        url: '/signup',
+        data: {
+            username,
+            password,
+        },
+    })
     const {
         register,
         handleSubmit,
@@ -30,7 +43,11 @@ const Signup = () => {
         <section className="flex flex-col items-center justify-center w-full pt-24">
             <h3 className="text-xl font-Roboto">Sign Up!</h3>
             <form
-                onSubmit={handleSubmit((d) => console.log(d))}
+                onSubmit={handleSubmit(() => {
+                    console.log(username)
+                    console.log(password)
+                    sendData()
+                })}
                 className="flex flex-col w-1/4 gap-y-4"
             >
                 <div className="flex flex-col gap-1">
@@ -43,6 +60,7 @@ const Signup = () => {
                                 : 'border-black caret-black'
                         }`}
                         {...register('username')}
+                        onChange={(e) => setUsername(e.target.value)}
                     />
 
                     {errors.username?.message && (
@@ -61,6 +79,7 @@ const Signup = () => {
                                 : 'border-black caret-black'
                         }`}
                         {...register('password')}
+                        onChange={(e) => setPassword(e.target.value)}
                     />
                     {errors.password?.message && (
                         <p className="font-medium text-red-600 capitalize">
@@ -91,6 +110,8 @@ const Signup = () => {
                     className="w-full py-4 font-medium tracking-widest text-white uppercase bg-blue-600 font-Roboto hover:bg-blue-700 hover:cursor-pointer"
                 />
             </form>
+            {isLoading ? <p>Loading...</p> : null}
+            {error ? <p>Error</p> : null}
         </section>
     )
 }
