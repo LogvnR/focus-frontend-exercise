@@ -32,24 +32,37 @@ function App() {
     }, [])
     return (
         <Router>
-            <div className="App" style={{ margin: '1rem' }}>
-                <header className="App-header">
+            <div className="w-full p-4 bg-gray-600 font-Roboto">
+                <header className="text-xl font-medium tracking-wider text-white">
                     <h1>Focus Frontend Interview Exercise</h1>
                 </header>
-                <nav
-                    style={{
-                        borderBottom: 'solid 1px',
-                        paddingBottom: '1rem',
-                        marginBottom: '1rem',
-                    }}
-                >
-                    <Link to="/">Home</Link>|{' '}
-                    <Link to="/states">States Search Example</Link>|{' '}
-                    <Link to="/trade">Interstate Trade Search</Link>|{' '}
-                    <Link to="/economy">State Economy Search</Link>|{' '}
-                    <Link to="/login">Login</Link> |{' '}
-                    <Link to="/signup">Signup</Link> |{' '}
+                <nav className="text-base tracking-wider text-white">
+                    <Link to="/" className="hover:text-white/80">
+                        Home |
+                    </Link>
+                    <Link to="/states" className="hover:text-white/80">
+                        {' '}
+                        States Search Example |
+                    </Link>
+                    <Link to="/trade" className="hover:text-white/80">
+                        {' '}
+                        Interstate Trade Search |
+                    </Link>
+                    <Link to="/economy" className="hover:text-white/80">
+                        {' '}
+                        State Economy Search |
+                    </Link>
+                    <Link to="/login" className="hover:text-white/80">
+                        {' '}
+                        Login |
+                    </Link>
+                    <Link to="/signup" className="hover:text-white/80">
+                        {' '}
+                        Signup
+                    </Link>
                 </nav>
+            </div>
+            <main className="w-full p-4 bg-white">
                 <Routes>
                     <Route path="/" element={<Home />} />
 
@@ -60,7 +73,7 @@ function App() {
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
                 </Routes>
-            </div>
+            </main>
         </Router>
     )
 }
