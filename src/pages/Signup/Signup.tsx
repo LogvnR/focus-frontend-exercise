@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 
 import { useAxios } from '../../hooks/useAxios'
+import userStore from '../../helpers/store'
 
 const schema = z
     .object({
@@ -32,6 +33,7 @@ const Signup = () => {
             username,
             password,
         },
+        withCredentials: true,
     })
     const {
         register,

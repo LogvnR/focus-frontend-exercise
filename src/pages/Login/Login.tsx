@@ -1,6 +1,11 @@
+import { useState } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
+
+import { useAxios } from '../../hooks/useAxios'
+
+import userStore from '../../helpers/store'
 
 const schema = z.object({
     username: z.string().min(1, { message: 'username is required' }),
@@ -11,6 +16,19 @@ const schema = z.object({
 })
 
 const Login = () => {
+    const [username, setUsername] = useState<string>('')
+    const [password, setPassword] = useState<string>('')
+    const { setNewUser } = userStore()
+    const { error, isLoading, sendData } = useAxios({
+        method: 'post',
+        url: '/login',
+        data: {
+            username,
+            password,
+        },
+        withCredentials: true,
+    })
+
     const {
         register,
         handleSubmit,
@@ -21,7 +39,12 @@ const Login = () => {
         <section className="flex flex-col items-center justify-center w-full pt-24">
             <h3 className="text-xl font-Roboto">Login!</h3>
             <form
-                onSubmit={handleSubmit((d) => console.log(d))}
+                onSubmit={handleSubmit(() => {
+                    console.log(username)
+                    console.log(password)
+                    sendData()
+                    setNewUser(username)
+                })}
                 className="flex flex-col w-1/4 gap-y-4"
             >
                 <div className="flex flex-col gap-1">
@@ -34,6 +57,7 @@ const Login = () => {
                                 : 'border-black caret-black'
                         }`}
                         {...register('username')}
+                        onChange={(e) => setUsername(e.target.value)}
                     />
 
                     {errors.username?.message && (
@@ -52,6 +76,7 @@ const Login = () => {
                                 : 'border-black caret-black'
                         }`}
                         {...register('password')}
+                        onChange={(e) => setPassword(e.target.value)}
                     />
                     {errors.password?.message && (
                         <p className="font-medium text-red-600 capitalize">
@@ -65,6 +90,8 @@ const Login = () => {
                     className="w-full py-4 font-medium tracking-widest text-white uppercase bg-blue-600 font-Roboto hover:bg-blue-700 hover:cursor-pointer"
                 />
             </form>
+            {isLoading ? <p>Loading...</p> : null}
+            {error ? <p>Error</p> : null}
         </section>
     )
 }
