@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react'
-import { useForm, SubmitHandler } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 
 import { useAxios } from '../../hooks/useAxios'
-import userStore from '../../helpers/store'
 
 const schema = z
     .object({

@@ -38,7 +38,7 @@ const Login = () => {
     } = useForm({ resolver: zodResolver(schema) })
 
     useEffect(() => {
-        if (isSubmitSuccessful) {
+        if (isSubmitSuccessful && !error) {
             reset({ username: '', password: '' })
         }
     }, [formState, reset])
