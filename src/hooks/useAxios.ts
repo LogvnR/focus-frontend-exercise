@@ -10,6 +10,7 @@ export const useAxios = (axiosParams: AxiosRequestConfig) => {
 
     const fetchData = async (params: AxiosRequestConfig) => {
         try {
+            setError(undefined)
             setIsLoading(true)
             const result = await axios.request(params)
             setResponse(result)

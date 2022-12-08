@@ -59,7 +59,7 @@ function App() {
                 <header className="flex justify-between text-xl font-medium tracking-wider text-white">
                     <h1>Focus Frontend Interview Exercise</h1>
                     {/* {sessionUser ? <p>Hello, {sessionUser?.username}</p> : null} */}
-                    {response ? <p>Hello, {response.data?.username}</p> : null}
+                    {response?.data ? <p>{response?.data?.username}</p> : null}
                 </header>
                 <nav className="text-base tracking-wider text-white">
                     <Link to="/" className="hover:text-white/80">

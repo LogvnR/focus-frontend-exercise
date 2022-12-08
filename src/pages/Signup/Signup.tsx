@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -38,8 +38,16 @@ const Signup = () => {
     const {
         register,
         handleSubmit,
-        formState: { errors },
+        reset,
+        formState,
+        formState: { errors, isSubmitSuccessful },
     } = useForm({ resolver: zodResolver(schema) })
+
+    useEffect(() => {
+        if (isSubmitSuccessful) {
+            reset({ username: '', password: '', cpassword: '' })
+        }
+    }, [formState, reset])
 
     return (
         <section className="flex flex-col items-center justify-center w-full pt-24">
@@ -112,8 +120,16 @@ const Signup = () => {
                     className="w-full py-4 font-medium tracking-widest text-white uppercase bg-blue-600 font-Roboto hover:bg-blue-700 hover:cursor-pointer"
                 />
             </form>
-            {isLoading ? <p>Loading...</p> : null}
-            {error ? <p>Error</p> : null}
+            {isLoading ? (
+                <p className="mt-2 font-medium text-blue-600 capitalize animate-pulse">
+                    Loading...
+                </p>
+            ) : null}
+            {error ? (
+                <p className="mt-2 font-medium text-red-600 capitalize">
+                    An Error Occurred
+                </p>
+            ) : null}
         </section>
     )
 }

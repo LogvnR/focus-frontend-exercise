@@ -40,6 +40,6 @@ export const useUser = (axiosParams: AxiosRequestConfig) => {
     const getData = () => {
         fetchData(axiosParams)
     }
-
+    console.log(response)
     return { response, error, isLoading, getData }
 }

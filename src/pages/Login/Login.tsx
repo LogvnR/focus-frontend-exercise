@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -32,19 +32,27 @@ const Login = () => {
     const {
         register,
         handleSubmit,
-        formState: { errors },
+        reset,
+        formState,
+        formState: { errors, isSubmitSuccessful },
     } = useForm({ resolver: zodResolver(schema) })
+
+    useEffect(() => {
+        if (isSubmitSuccessful) {
+            reset({ username: '', password: '' })
+        }
+    }, [formState, reset])
+
+    const formSubmitHandler = () => {
+        sendData()
+        setNewUser(username)
+    }
 
     return (
         <section className="flex flex-col items-center justify-center w-full pt-24">
             <h3 className="text-xl font-Roboto">Login!</h3>
             <form
-                onSubmit={handleSubmit(() => {
-                    console.log(username)
-                    console.log(password)
-                    sendData()
-                    setNewUser(username)
-                })}
+                onSubmit={handleSubmit(formSubmitHandler)}
                 className="flex flex-col w-1/4 gap-y-4"
             >
                 <div className="flex flex-col gap-1">
@@ -90,8 +98,16 @@ const Login = () => {
                     className="w-full py-4 font-medium tracking-widest text-white uppercase bg-blue-600 font-Roboto hover:bg-blue-700 hover:cursor-pointer"
                 />
             </form>
-            {isLoading ? <p>Loading...</p> : null}
-            {error ? <p>Error</p> : null}
+            {isLoading ? (
+                <p className="mt-2 font-medium text-blue-600 capitalize animate-pulse">
+                    Loading...
+                </p>
+            ) : null}
+            {error ? (
+                <p className="mt-2 font-medium text-red-600 capitalize">
+                    Please Check Your Username and Password
+                </p>
+            ) : null}
         </section>
     )
 }
