@@ -10,7 +10,11 @@ const StateSearch = () => {
         setTimeout(() => {
             navigate('/signup')
         }, 3000)
-        return <p>Sorry, You Do Not Have Access To This Page</p>
+        return (
+            <p className="mx-auto mt-2 font-medium text-blue-600 capitalize">
+                Sorry, You Do Not Have Access To This Page
+            </p>
+        )
     }
     return <div>Implement me</div>
 }

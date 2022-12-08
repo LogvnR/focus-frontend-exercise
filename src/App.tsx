@@ -12,46 +12,12 @@ import StateSearch from './pages/State Search/StateSearch'
 import userStore from './helpers/store'
 import { useUser } from './hooks/useUser'
 
-export interface User {
-    id: number
-    username: string
-}
-
-export interface WithUserProps {
-    user: User | null
-}
-
-// const addr = 'http://localhost:4000/session'
-// const fetcher = async (url: string) => {
-//     await axios.get(url, { withCredentials: true }).then((res) => res)
-// }
-
-function App() {
-    // const [sessionUser, setSessionUser] = useState<User | null>(null)
-    // const { setNewUser, newLoginUser } = userStore()
+const App = () => {
     const { response } = useUser({
         method: 'get',
         url: '/session',
         withCredentials: true,
     })
-    // const { data, error } = useSWR(addr, fetcher)
-
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         const response = await fetch('http://localhost:4000/session', {
-    //             credentials: 'include',
-    //         })
-    //         const user = await response.json()
-    //         if (user?.id) {
-    //             setSessionUser(user)
-    //             setNewUser(user?.username)
-    //             console.log('new user!', user)
-    //         } else {
-    //             console.log('no new user')
-    //         }
-    //     }
-    //     fetchData()
-    // }, [newLoginUser])
 
     return (
         <Router>

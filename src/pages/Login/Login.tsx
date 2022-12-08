@@ -6,6 +6,7 @@ import * as z from 'zod'
 import { useAxios } from '../../hooks/useAxios'
 
 import userStore from '../../helpers/store'
+import { useNavigate } from 'react-router-dom'
 
 const schema = z.object({
     username: z.string().min(1, { message: 'username is required' }),
@@ -18,7 +19,8 @@ const schema = z.object({
 const Login = () => {
     const [username, setUsername] = useState<string>('')
     const [password, setPassword] = useState<string>('')
-    const { setNewUser } = userStore()
+    const { setNewUser, newUser } = userStore()
+    const navigate = useNavigate()
     const { error, isLoading, sendData } = useAxios({
         method: 'post',
         url: '/login',
@@ -46,6 +48,17 @@ const Login = () => {
     const formSubmitHandler = () => {
         sendData()
         setNewUser(username)
+    }
+
+    if (newUser !== '') {
+        setTimeout(() => {
+            navigate('/')
+        }, 3000)
+        return (
+            <p className="mx-auto mt-2 font-medium text-blue-600 capitalize">
+                You are already logged in!
+            </p>
+        )
     }
 
     return (
