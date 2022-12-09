@@ -1,5 +1,7 @@
 import { Link, Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
+import axios from 'axios'
+import useSWR from 'swr'
 
 import Home from './pages/Home/Home'
 import InterstateTrade from './pages/Interstate Trade/InterstateTrade'
@@ -7,49 +9,52 @@ import Login from './pages/Login/Login'
 import Signup from './pages/Signup/Signup'
 import StateEconomySearch from './pages/State Economy/StateEconomySearch'
 import StateSearch from './pages/State Search/StateSearch'
+import userStore from './helpers/store'
+import { useUser } from './hooks/useUser'
 
-export interface User {
-    id: number
-}
+const App = () => {
+    const { response } = useUser({
+        method: 'get',
+        url: '/session',
+        withCredentials: true,
+    })
 
-export interface WithUserProps {
-    user: User | null
-}
-
-function App() {
-    const [sessionUser, setSessionUser] = useState<User | null>(null)
-    useEffect(() => {
-        const fetchData = async () => {
-            const response = await fetch('http://localhost:4000/session', {
-                credentials: 'include',
-            })
-            const user = await response.json()
-            if (user?.id) {
-                setSessionUser(user)
-            }
-        }
-        fetchData()
-    }, [])
     return (
         <Router>
-            <div className="App" style={{ margin: '1rem' }}>
-                <header className="App-header">
+            <div className="w-full p-4 bg-gray-600 font-Roboto">
+                <header className="flex justify-between text-xl font-medium tracking-wider text-white">
                     <h1>Focus Frontend Interview Exercise</h1>
+                    {/* {sessionUser ? <p>Hello, {sessionUser?.username}</p> : null} */}
+                    {response?.data ? <p>{response?.data?.username}</p> : null}
                 </header>
-                <nav
-                    style={{
-                        borderBottom: 'solid 1px',
-                        paddingBottom: '1rem',
-                        marginBottom: '1rem',
-                    }}
-                >
-                    <Link to="/">Home</Link>|{' '}
-                    <Link to="/states">States Search Example</Link>|{' '}
-                    <Link to="/trade">Interstate Trade Search</Link>|{' '}
-                    <Link to="/economy">State Economy Search</Link>|{' '}
-                    <Link to="/login">Login</Link> |{' '}
-                    <Link to="/signup">Signup</Link> |{' '}
+                <nav className="text-base tracking-wider text-white">
+                    <Link to="/" className="hover:text-white/80">
+                        Home |
+                    </Link>
+                    <Link to="/states" className="hover:text-white/80">
+                        {' '}
+                        States Search Example |
+                    </Link>
+                    <Link to="/trade" className="hover:text-white/80">
+                        {' '}
+                        Interstate Trade Search |
+                    </Link>
+                    <Link to="/economy" className="hover:text-white/80">
+                        {' '}
+                        State Economy Search |
+                    </Link>
+
+                    <Link to="/login" className="hover:text-white/80">
+                        {' '}
+                        Login |
+                    </Link>
+                    <Link to="/signup" className="hover:text-white/80">
+                        {' '}
+                        Signup
+                    </Link>
                 </nav>
+            </div>
+            <main className="w-full p-4 bg-white">
                 <Routes>
                     <Route path="/" element={<Home />} />
 
@@ -60,7 +65,7 @@ function App() {
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
                 </Routes>
-            </div>
+            </main>
         </Router>
     )
 }
