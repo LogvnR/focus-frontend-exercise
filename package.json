@@ -60,7 +60,8 @@
         "test": "react-scripts test",
         "eject": "react-scripts eject",
         "server": "ts-node src/server/index.ts",
-        "server:watch": "nodemon --watch 'src/server/**' --ext 'ts' --exec 'ts-node src/server/index.ts'"
+        "server:watch": "nodemon --watch 'src/server/**' --ext 'ts' --exec 'ts-node src/server/index.ts'",
+        "codegen": "graphql-codegen --watch"
     },
     "eslintConfig": {
         "extends": [
@@ -81,6 +82,8 @@
         ]
     },
     "devDependencies": {
+        "@graphql-codegen/cli": "^2.16.1",
+        "@graphql-codegen/client-preset": "^1.2.3",
         "@types/lodash": "^4.14.181",
         "@types/node-fetch": "^2.6.1"
     },
