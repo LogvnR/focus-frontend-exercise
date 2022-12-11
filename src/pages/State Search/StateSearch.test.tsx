@@ -1,9 +1,12 @@
 import StateSearch, { GET_STATE } from './StateSearch'
 import { screen, render } from '@testing-library/react'
 import { MockedProvider } from '@apollo/client/testing'
-import { BrowserRouter } from 'react-router-dom'
+import userStore from '../../helpers/store'
 
 describe('Default State Search', () => {
+    beforeEach(() => {
+        userStore.setState({ newUser: 'Logan' })
+    })
     const mocks: any[] = [
         {
             request: {
@@ -46,13 +49,12 @@ describe('Default State Search', () => {
         render(
             <MockedProvider mocks={mocks} addTypename={false}>
                 <StateSearch />
-            </MockedProvider>,
-            { wrapper: BrowserRouter }
+            </MockedProvider>
         )
+
+        expect(await screen.findByText('California')).toBeInTheDocument()
+        expect(await screen.findByText('Texas')).toBeInTheDocument()
+        expect(await screen.findByText('New York')).toBeInTheDocument()
         screen.debug()
-        // expect(await screen.findAllByText(/california/i)).toBeInTheDocument()
-        // expect(await screen.findAllByText(/texas/i)).toBeInTheDocument()
-        // expect(await screen.findAllByText(/new york/i)).toBeInTheDocument()
-        expect(1).toBe(1)
     })
 })
