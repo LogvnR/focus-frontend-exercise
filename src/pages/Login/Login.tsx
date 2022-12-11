@@ -49,7 +49,7 @@ const Login = () => {
         setLoginUser(username)
     }
 
-    if (newUser !== '') {
+    if (newUser) {
         return (
             <p className="mx-auto mt-2 font-medium text-blue-600 capitalize">
                 You are already logged in!
