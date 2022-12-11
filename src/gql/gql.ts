@@ -13,13 +13,13 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel-plugin for production.
  */
 const documents = {
-    "\n    query GetState($name: String) {\n        states(name: $name) {\n            id\n            name\n        }\n    }\n": types.GetStateDocument,
+    "\n    query GetState($name: String) {\n        states(name: $name) {\n            id\n            name\n            key\n            slug\n        }\n    }\n": types.GetStateDocument,
 };
 
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n    query GetState($name: String) {\n        states(name: $name) {\n            id\n            name\n        }\n    }\n"): (typeof documents)["\n    query GetState($name: String) {\n        states(name: $name) {\n            id\n            name\n        }\n    }\n"];
+export function graphql(source: "\n    query GetState($name: String) {\n        states(name: $name) {\n            id\n            name\n            key\n            slug\n        }\n    }\n"): (typeof documents)["\n    query GetState($name: String) {\n        states(name: $name) {\n            id\n            name\n            key\n            slug\n        }\n    }\n"];
 
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
