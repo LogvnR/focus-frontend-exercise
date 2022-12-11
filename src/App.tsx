@@ -1,16 +1,16 @@
 import { Link, Route, BrowserRouter as Router, Routes } from 'react-router-dom'
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
-import useSWR from 'swr'
+import { useEffect } from 'react'
+
+import userStore from './helpers/store'
+import { useUser } from './hooks/useUser'
 
 import Home from './pages/Home/Home'
 import InterstateTrade from './pages/Interstate Trade/InterstateTrade'
-import Login from './pages/Login/Login'
-import Signup from './pages/Signup/Signup'
 import StateEconomySearch from './pages/State Economy/StateEconomySearch'
 import StateSearch from './pages/State Search/StateSearch'
-import userStore from './helpers/store'
-import { useUser } from './hooks/useUser'
+
+import Login from './pages/Login/Login'
+import Signup from './pages/Signup/Signup'
 
 const App = () => {
     const { response } = useUser({
@@ -18,6 +18,12 @@ const App = () => {
         url: '/session',
         withCredentials: true,
     })
+    const { setNewUser } = userStore()
+
+    useEffect(() => {
+        setNewUser(response?.data?.username)
+        console.log(response?.data?.username)
+    }, [response?.data])
 
     return (
         <Router>

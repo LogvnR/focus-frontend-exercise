@@ -1,10 +1,12 @@
 import { useState } from 'react'
-import userStore from '../../helpers/store'
-import { Link, useNavigate } from 'react-router-dom'
+import { Table } from '@mantine/core'
+
 import { useQuery } from '@apollo/client'
 import { graphql } from '../../gql/gql'
+
+import userStore from '../../helpers/store'
+
 import Search from '../../components/Search/Search'
-import { Table } from '@mantine/core'
 
 export const GET_STATE = graphql(/* GraphQL */ `
     query GetState($name: String) {
@@ -20,17 +22,13 @@ export const GET_STATE = graphql(/* GraphQL */ `
 const StateSearch = () => {
     const [stateSearch, setStateSearch] = useState<string>('')
     const { newUser } = userStore()
-    const navigate = useNavigate()
     const { data, loading, error } = useQuery(GET_STATE, {
         variables: {
             name: stateSearch,
         },
     })
 
-    if (newUser === '') {
-        setTimeout(() => {
-            navigate('/signup')
-        }, 3000)
+    if (!newUser) {
         return (
             <p className="mx-auto mt-2 font-medium text-blue-600 capitalize">
                 Sorry, You Do Not Have Access To This Page
