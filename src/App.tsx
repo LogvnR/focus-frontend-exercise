@@ -1,7 +1,5 @@
 import { Link, Route, BrowserRouter as Router, Routes } from 'react-router-dom'
-import { useEffect } from 'react'
 
-import userStore from './helpers/store'
 import { useUser } from './hooks/useUser'
 
 import Home from './pages/Home/Home'
@@ -18,19 +16,12 @@ const App = () => {
         url: '/session',
         withCredentials: true,
     })
-    const { setNewUser } = userStore()
-
-    useEffect(() => {
-        setNewUser(response?.data?.username)
-        console.log(response?.data?.username)
-    }, [response?.data])
 
     return (
         <Router>
             <div className="w-full p-4 bg-gray-600 font-Roboto">
                 <header className="flex justify-between text-xl font-medium tracking-wider text-white">
                     <h1>Focus Frontend Interview Exercise</h1>
-                    {/* {sessionUser ? <p>Hello, {sessionUser?.username}</p> : null} */}
                     {response?.data ? <p>{response?.data?.username}</p> : null}
                 </header>
                 <nav className="text-base tracking-wider text-white">

@@ -1,5 +1,5 @@
 import StateSearch, { GET_STATE } from './StateSearch'
-import { screen, render } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import { MockedProvider } from '@apollo/client/testing'
 import userStore from '../../helpers/store'
 
@@ -46,15 +46,14 @@ describe('Default State Search', () => {
     ]
 
     it('Renders Initial Data', async () => {
-        render(
+        const { findByText } = render(
             <MockedProvider mocks={mocks} addTypename={false}>
                 <StateSearch />
             </MockedProvider>
         )
 
-        expect(await screen.findByText('California')).toBeInTheDocument()
-        expect(await screen.findByText('Texas')).toBeInTheDocument()
-        expect(await screen.findByText('New York')).toBeInTheDocument()
-        screen.debug()
+        expect(await findByText('California')).toBeInTheDocument()
+        expect(await findByText('Texas')).toBeInTheDocument()
+        expect(await findByText('New York')).toBeInTheDocument()
     })
 })

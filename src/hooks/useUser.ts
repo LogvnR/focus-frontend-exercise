@@ -7,13 +7,14 @@ export const useUser = (axiosParams: AxiosRequestConfig) => {
     const [response, setResponse] = useState<AxiosResponse>()
     const [error, setError] = useState<AxiosError>()
     const [isLoading, setIsLoading] = useState(false)
-    const { newLoginUser } = userStore()
+    const { newLoginUser, setNewUser } = userStore()
 
     const fetchData = async (params: AxiosRequestConfig) => {
         try {
             setIsLoading(true)
             const result = await axios.request(params)
             setResponse(result)
+            setNewUser(result?.data?.username)
         } catch (err: any) {
             setError(err)
         } finally {
@@ -23,12 +24,11 @@ export const useUser = (axiosParams: AxiosRequestConfig) => {
 
     useEffect(() => {
         fetchData(axiosParams)
-        console.log('ran')
     }, [newLoginUser])
 
     const getData = () => {
         fetchData(axiosParams)
     }
-    console.log(response)
+
     return { response, error, isLoading, getData }
 }
