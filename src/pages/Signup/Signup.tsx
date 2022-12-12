@@ -4,7 +4,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 
 import userStore from '../../helpers/store'
-import { useNavigate } from 'react-router-dom'
 import { useAxios } from '../../hooks/useAxios'
 
 const schema = z
@@ -28,7 +27,6 @@ const Signup = () => {
     const [username, setUsername] = useState<string>('')
     const [password, setPassword] = useState<string>('')
     const { newUser } = userStore()
-    const navigate = useNavigate()
     const { error, isLoading, sendData } = useAxios({
         method: 'post',
         url: '/signup',
@@ -52,10 +50,7 @@ const Signup = () => {
         }
     }, [formState, reset])
 
-    if (newUser !== '') {
-        setTimeout(() => {
-            navigate('/')
-        }, 3000)
+    if (newUser) {
         return (
             <p className="mx-auto mt-2 font-medium text-blue-600 capitalize">
                 You are already signed in!

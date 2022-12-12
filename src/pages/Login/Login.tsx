@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react'
-import { useForm, SubmitHandler } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 
 import { useAxios } from '../../hooks/useAxios'
 
 import userStore from '../../helpers/store'
-import { useNavigate } from 'react-router-dom'
 
 const schema = z.object({
     username: z.string().min(1, { message: 'username is required' }),
@@ -19,8 +18,8 @@ const schema = z.object({
 const Login = () => {
     const [username, setUsername] = useState<string>('')
     const [password, setPassword] = useState<string>('')
-    const { setNewUser, newUser } = userStore()
-    const navigate = useNavigate()
+    const { setLoginUser, newUser } = userStore()
+
     const { error, isLoading, sendData } = useAxios({
         method: 'post',
         url: '/login',
@@ -47,13 +46,10 @@ const Login = () => {
 
     const formSubmitHandler = () => {
         sendData()
-        setNewUser(username)
+        setLoginUser(username)
     }
 
-    if (newUser !== '') {
-        setTimeout(() => {
-            navigate('/')
-        }, 3000)
+    if (newUser) {
         return (
             <p className="mx-auto mt-2 font-medium text-blue-600 capitalize">
                 You are already logged in!
