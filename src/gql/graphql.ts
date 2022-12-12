@@ -82,6 +82,13 @@ export type State = {
   tradeSummary?: Maybe<InterstateTradeSummary>;
 };
 
+export type GetTradeQueryVariables = Exact<{
+  name?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type GetTradeQuery = { __typename?: 'Query', states?: Array<{ __typename?: 'State', tradeSummary?: { __typename?: 'InterstateTradeSummary', name?: string | null, totalDollarAmount?: number | null, totalTons?: number | null, statesByDollars?: Array<{ __typename?: 'InterstateTradeForState', name?: string | null, amount?: number | null } | null> | null, statesByTons?: Array<{ __typename?: 'InterstateTradeForState', name?: string | null, amount?: number | null } | null> | null } | null } | null> | null };
+
 export type GetStateQueryVariables = Exact<{
   name?: InputMaybe<Scalars['String']>;
 }>;
@@ -90,4 +97,5 @@ export type GetStateQueryVariables = Exact<{
 export type GetStateQuery = { __typename?: 'Query', states?: Array<{ __typename?: 'State', id?: string | null, name?: string | null, key?: string | null, slug?: string | null } | null> | null };
 
 
+export const GetTradeDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetTrade"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"states"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"tradeSummary"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"totalDollarAmount"}},{"kind":"Field","name":{"kind":"Name","value":"totalTons"}},{"kind":"Field","name":{"kind":"Name","value":"statesByDollars"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"statesByTons"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetTradeQuery, GetTradeQueryVariables>;
 export const GetStateDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetState"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"states"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"key"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}}]}}]}}]} as unknown as DocumentNode<GetStateQuery, GetStateQueryVariables>;
