@@ -5,11 +5,14 @@ import userStore from '../../helpers/store'
 
 import Search from '../../components/Search/Search'
 import GetStates from '../../components/Get States/GetStates'
+import useDebounce from '../../hooks/useDebounce'
 
 const StateSearch = () => {
     const [stateSearch, setStateSearch] = useState<string>('')
     const navigate = useNavigate()
     const { newUser } = userStore()
+
+    const debouncedStateSearch = useDebounce(stateSearch, 250)
 
     if (!newUser) {
         return (
@@ -30,7 +33,7 @@ const StateSearch = () => {
     return (
         <div className="flex flex-col items-center w-full px-12">
             <Search stateSearch={setStateSearch} />
-            <GetStates searchByState={stateSearch} />
+            <GetStates searchByState={debouncedStateSearch} />
         </div>
     )
 }

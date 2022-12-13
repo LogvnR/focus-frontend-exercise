@@ -5,6 +5,7 @@ import { Checkbox } from '@mantine/core'
 import userStore from '../../helpers/store'
 import Search from '../../components/Search/Search'
 import { GetEconomy } from '../../components/Get Economy/GetEconomy'
+import useDebounce from '../../hooks/useDebounce'
 
 const StateEconomySearch = () => {
     const [economySearch, setEconomySearch] = useState<string>('')
@@ -15,6 +16,8 @@ const StateEconomySearch = () => {
     const navigate = useNavigate()
 
     const { newUser } = userStore()
+
+    const debouncedEconomySearch = useDebounce(economySearch, 250)
 
     if (!newUser) {
         return (
@@ -56,7 +59,7 @@ const StateEconomySearch = () => {
                 />
             </div>
             <GetEconomy
-                economyByState={economySearch}
+                economyByState={debouncedEconomySearch}
                 hasTradeData={hasTradeData}
                 hasProductionData={hasProductionData}
                 hasEmploymentData={hasEmploymentData}

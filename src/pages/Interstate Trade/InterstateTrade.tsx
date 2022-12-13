@@ -4,11 +4,14 @@ import { useNavigate } from 'react-router-dom'
 import userStore from '../../helpers/store'
 import Search from '../../components/Search/Search'
 import GetTrades from '../../components/Get Trades/GetTrades'
+import useDebounce from '../../hooks/useDebounce'
 
 const InterstateTrade = () => {
     const [interStateSearch, setInterStateSearch] = useState<string>('')
     const navigate = useNavigate()
     const { newUser } = userStore()
+
+    const debouncedInterStateSearch = useDebounce(interStateSearch, 250)
 
     if (!newUser) {
         return (
@@ -29,7 +32,7 @@ const InterstateTrade = () => {
     return (
         <div className="flex flex-col items-center w-full px-12">
             <Search stateSearch={setInterStateSearch} />
-            <GetTrades tradesByState={interStateSearch} />
+            <GetTrades tradesByState={debouncedInterStateSearch} />
         </div>
     )
 }
