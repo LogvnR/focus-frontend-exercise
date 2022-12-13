@@ -237,3 +237,5 @@ export const GetEconomy = ({
         </Table>
     )
 }
+
+export default GetEconomy
