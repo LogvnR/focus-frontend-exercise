@@ -1,4 +1,4 @@
-import InterstateTrade, { GET_TRADE } from './InterstateTrade'
+import GetTrades, { GET_TRADE } from './GetTrades'
 import { render } from '@testing-library/react'
 import { MockedProvider } from '@apollo/client/testing'
 import userStore from '../../helpers/store'
@@ -243,15 +243,126 @@ describe('Default State Trade Search', () => {
         },
     ]
 
+    const mockState = mocks[0].request.variables.name
+
     it('Renders Initial Data', async () => {
         const { findByText } = render(
             <MockedProvider mocks={mocks} addTypename={false}>
-                <InterstateTrade />
+                <GetTrades tradesByState={mockState} />
             </MockedProvider>
         )
 
         expect(await findByText('California')).toBeInTheDocument()
         expect(await findByText('$2,498,725.27')).toBeInTheDocument()
         expect(await findByText('$305.13')).toBeInTheDocument()
+    })
+})
+
+describe('Specific State Trade Search', () => {
+    beforeEach(() => {
+        userStore.setState({ newUser: 'Logan' })
+    })
+    const mocks: any[] = [
+        {
+            request: {
+                query: GET_TRADE,
+                variables: {
+                    name: 'New York',
+                },
+            },
+            result: {
+                data: {
+                    states: [
+                        {
+                            tradeSummary: {
+                                name: 'New York',
+                                totalDollarAmount: 865636.1591491699,
+                                totalTons: 544360.0127358437,
+                                statesByDollars: [
+                                    {
+                                        name: 'Montana',
+                                        amount: 302.093017578125,
+                                        __typename: 'InterstateTradeForState',
+                                    },
+                                    {
+                                        name: 'Wyoming',
+                                        amount: 305.1299133300781,
+                                        __typename: 'InterstateTradeForState',
+                                    },
+                                    {
+                                        name: 'South Dakota',
+                                        amount: 334.9541015625,
+                                        __typename: 'InterstateTradeForState',
+                                    },
+                                    {
+                                        name: 'New Mexico',
+                                        amount: 593.9080200195312,
+                                        __typename: 'InterstateTradeForState',
+                                    },
+                                    {
+                                        name: 'District of Columbia',
+                                        amount: 622.2505493164062,
+                                        __typename: 'InterstateTradeForState',
+                                    },
+                                    {
+                                        name: 'North Dakota',
+                                        amount: 626.5189819335938,
+                                        __typename: 'InterstateTradeForState',
+                                    },
+                                ],
+                                statesByTons: [
+                                    {
+                                        name: 'Alaska',
+                                        amount: 7.172892093658447,
+                                        __typename: 'InterstateTradeForState',
+                                    },
+                                    {
+                                        name: 'South Dakota',
+                                        amount: 24.14504051208496,
+                                        __typename: 'InterstateTradeForState',
+                                    },
+                                    {
+                                        name: 'Hawaii',
+                                        amount: 29.001893997192383,
+                                        __typename: 'InterstateTradeForState',
+                                    },
+                                    {
+                                        name: 'Montana',
+                                        amount: 30.303096771240234,
+                                        __typename: 'InterstateTradeForState',
+                                    },
+                                    {
+                                        name: 'New Mexico',
+                                        amount: 31.761688232421875,
+                                        __typename: 'InterstateTradeForState',
+                                    },
+                                    {
+                                        name: 'District of Columbia',
+                                        amount: 52.3410758972168,
+                                        __typename: 'InterstateTradeForState',
+                                    },
+                                ],
+                                __typename: 'InterstateTradeSummary',
+                            },
+                            __typename: 'State',
+                        },
+                    ],
+                },
+            },
+        },
+    ]
+
+    const mockState = mocks[0].request.variables.name
+
+    it('Renders Specific Trade Data', async () => {
+        const { findByText } = render(
+            <MockedProvider mocks={mocks} addTypename={false}>
+                <GetTrades tradesByState={mockState} />
+            </MockedProvider>
+        )
+
+        expect(await findByText('New York')).toBeInTheDocument()
+        expect(await findByText('$865,636.16')).toBeInTheDocument()
+        expect(await findByText('544,360.01t')).toBeInTheDocument()
     })
 })
