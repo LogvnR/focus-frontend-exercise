@@ -58,7 +58,7 @@ const Login = () => {
     if (newUser) {
         setTimeout(() => {
             navigate('/')
-        }, 3000)
+        }, 2000)
         return (
             <p className="mx-auto mt-2 font-medium text-blue-600 capitalize">
                 You are already logged in!
