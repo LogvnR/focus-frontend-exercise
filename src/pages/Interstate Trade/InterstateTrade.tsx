@@ -11,7 +11,7 @@ const InterstateTrade = () => {
     const navigate = useNavigate()
     const { newUser } = userStore()
 
-    const debouncedInterStateSearch = useDebounce(interStateSearch, 250)
+    const debouncedInterStateSearch = useDebounce(interStateSearch, 500)
 
     if (!newUser) {
         return (

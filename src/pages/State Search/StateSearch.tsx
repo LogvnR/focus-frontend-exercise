@@ -12,7 +12,7 @@ const StateSearch = () => {
     const navigate = useNavigate()
     const { newUser } = userStore()
 
-    const debouncedStateSearch = useDebounce(stateSearch, 250)
+    const debouncedStateSearch = useDebounce(stateSearch, 500)
 
     if (!newUser) {
         return (

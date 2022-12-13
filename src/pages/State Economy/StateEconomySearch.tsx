@@ -17,7 +17,7 @@ const StateEconomySearch = () => {
 
     const { newUser } = userStore()
 
-    const debouncedEconomySearch = useDebounce(economySearch, 250)
+    const debouncedEconomySearch = useDebounce(economySearch, 500)
 
     if (!newUser) {
         return (
