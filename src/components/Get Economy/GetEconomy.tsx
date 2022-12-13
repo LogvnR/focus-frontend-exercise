@@ -175,6 +175,7 @@ export const GetEconomy = ({
                                             <p key={h} className="font-medium">
                                                 {stateByTon?.name}:{' '}
                                                 <span className="font-normal">
+                                                    $
                                                     {stateByTon?.amount?.toLocaleString(
                                                         undefined,
                                                         {
@@ -182,7 +183,6 @@ export const GetEconomy = ({
                                                             maximumFractionDigits: 2,
                                                         }
                                                     )}
-                                                    t
                                                 </span>
                                             </p>
                                         ))}
