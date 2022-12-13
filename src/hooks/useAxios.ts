@@ -5,7 +5,14 @@ import { useNavigate } from 'react-router-dom'
 
 axios.defaults.baseURL = 'http://localhost:4000'
 
-export const useAxios = (axiosParams: AxiosRequestConfig) => {
+interface useAxiosProps {
+    variant: 'signup' | 'login'
+}
+
+export const useAxios = (
+    axiosParams: AxiosRequestConfig,
+    { variant }: useAxiosProps
+) => {
     const [response, setResponse] = useState<AxiosResponse>()
     const [error, setError] = useState<AxiosError>()
     const [isLoading, setIsLoading] = useState(false)
@@ -17,7 +24,7 @@ export const useAxios = (axiosParams: AxiosRequestConfig) => {
             setIsLoading(true)
             const result = await axios.request(params)
             setResponse(result)
-            navigate('/')
+            variant === 'signup' ? navigate('/login') : navigate('/')
         } catch (err: any) {
             setError(err)
         } finally {

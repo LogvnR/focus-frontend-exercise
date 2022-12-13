@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -20,15 +21,20 @@ const Login = () => {
     const [password, setPassword] = useState<string>('')
     const { setLoginUser, newUser } = userStore()
 
-    const { error, isLoading, sendData } = useAxios({
-        method: 'post',
-        url: '/login',
-        data: {
-            username,
-            password,
+    const navigate = useNavigate()
+
+    const { error, isLoading, sendData } = useAxios(
+        {
+            method: 'post',
+            url: '/login',
+            data: {
+                username,
+                password,
+            },
+            withCredentials: true,
         },
-        withCredentials: true,
-    })
+        { variant: 'login' }
+    )
 
     const {
         register,
@@ -50,6 +56,9 @@ const Login = () => {
     }
 
     if (newUser) {
+        setTimeout(() => {
+            navigate('/')
+        }, 3000)
         return (
             <p className="mx-auto mt-2 font-medium text-blue-600 capitalize">
                 You are already logged in!
