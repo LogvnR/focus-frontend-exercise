@@ -1,18 +1,29 @@
-import React from 'react'
 import ReactDOM from 'react-dom'
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
+import { ApolloProvider } from '@apollo/client'
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
+
 import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
+import client from './api/client'
 
-const client = new ApolloClient({
-    uri: 'http://localhost:4000/graphql',
-    cache: new InMemoryCache(),
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            refetchOnWindowFocus: false,
+            refetchOnMount: false,
+            refetchOnReconnect: false,
+            retry: 1,
+            staleTime: 5 * 1000,
+        },
+    },
 })
 
 ReactDOM.render(
     <ApolloProvider client={client}>
-        <App />
+        <QueryClientProvider client={queryClient}>
+            <App />
+        </QueryClientProvider>
     </ApolloProvider>,
     document.getElementById('root')
 )

@@ -4,8 +4,9 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 
+import { useMutation } from '@tanstack/react-query'
+import { createUserFn } from '../../api/userApi'
 import userStore from '../../helpers/store'
-import { useAxios } from '../../hooks/useAxios'
 
 const schema = z
     .object({
@@ -27,22 +28,12 @@ const schema = z
 const Signup = () => {
     const [username, setUsername] = useState<string>('')
     const [password, setPassword] = useState<string>('')
-    const { newUser } = userStore()
 
+    const { newUser } = userStore()
     const navigate = useNavigate()
 
-    const { error, isLoading, sendData } = useAxios(
-        {
-            method: 'post',
-            url: '/signup',
-            data: {
-                username,
-                password,
-            },
-            withCredentials: true,
-        },
-        { variant: 'signup' }
-    )
+    const createUser = useMutation(createUserFn)
+
     const {
         register,
         handleSubmit,
@@ -52,8 +43,9 @@ const Signup = () => {
     } = useForm({ resolver: zodResolver(schema) })
 
     useEffect(() => {
-        if (isSubmitSuccessful) {
+        if (isSubmitSuccessful && !createUser.isError) {
             reset({ username: '', password: '', cpassword: '' })
+            navigate('/login')
         }
     }, [formState, reset])
 
@@ -75,7 +67,7 @@ const Signup = () => {
                 onSubmit={handleSubmit(() => {
                     console.log(username)
                     console.log(password)
-                    sendData()
+                    createUser.mutate({ username, password })
                 })}
                 className="flex flex-col w-1/4 gap-y-4"
             >
@@ -139,12 +131,12 @@ const Signup = () => {
                     className="w-full py-4 font-medium tracking-widest text-white uppercase bg-blue-600 font-Roboto hover:bg-blue-700 hover:cursor-pointer"
                 />
             </form>
-            {isLoading ? (
+            {createUser.isLoading ? (
                 <p className="mt-2 font-medium text-blue-600 capitalize animate-pulse">
                     Loading...
                 </p>
             ) : null}
-            {error ? (
+            {createUser.isError ? (
                 <p className="mt-2 font-medium text-red-600 capitalize">
                     An Error Occurred
                 </p>
