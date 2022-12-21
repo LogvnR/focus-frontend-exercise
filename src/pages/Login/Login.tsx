@@ -4,7 +4,8 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 
-import { useAxios } from '../../hooks/useAxios'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { setUserFn } from '../../api/userApi'
 
 import userStore from '../../helpers/store'
 
@@ -19,22 +20,16 @@ const schema = z.object({
 const Login = () => {
     const [username, setUsername] = useState<string>('')
     const [password, setPassword] = useState<string>('')
-    const { setLoginUser, newUser } = userStore()
 
+    const { newUser } = userStore()
     const navigate = useNavigate()
 
-    const { error, isLoading, sendData } = useAxios(
-        {
-            method: 'post',
-            url: '/login',
-            data: {
-                username,
-                password,
-            },
-            withCredentials: true,
+    const queryClient = useQueryClient()
+    const loginUser = useMutation(setUserFn, {
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['user'] })
         },
-        { variant: 'login' }
-    )
+    })
 
     const {
         register,
@@ -45,14 +40,14 @@ const Login = () => {
     } = useForm({ resolver: zodResolver(schema) })
 
     useEffect(() => {
-        if (isSubmitSuccessful && !error) {
+        if (isSubmitSuccessful && !loginUser.isError) {
             reset({ username: '', password: '' })
+            navigate('/')
         }
     }, [formState, reset])
 
     const formSubmitHandler = () => {
-        sendData()
-        setLoginUser(username)
+        loginUser.mutate({ username, password })
     }
 
     if (newUser) {
@@ -116,12 +111,12 @@ const Login = () => {
                     className="w-full py-4 font-medium tracking-widest text-white uppercase bg-blue-600 font-Roboto hover:bg-blue-700 hover:cursor-pointer"
                 />
             </form>
-            {isLoading ? (
+            {loginUser.isLoading ? (
                 <p className="mt-2 font-medium text-blue-600 capitalize animate-pulse">
                     Loading...
                 </p>
             ) : null}
-            {error ? (
+            {loginUser.isError ? (
                 <p className="mt-2 font-medium text-red-600 capitalize">
                     Please Check Your Username and Password
                 </p>

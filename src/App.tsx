@@ -1,6 +1,10 @@
+import { useEffect } from 'react'
 import { Link, Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 
-import { useUser } from './hooks/useUser'
+import { useQuery } from '@tanstack/react-query'
+import { getUserFn } from './api/userApi'
+
+import userStore from './helpers/store'
 
 import Home from './pages/Home/Home'
 import InterstateTrade from './pages/Interstate Trade/InterstateTrade'
@@ -9,48 +13,80 @@ import StateSearch from './pages/State Search/StateSearch'
 
 import Login from './pages/Login/Login'
 import Signup from './pages/Signup/Signup'
+import { FaHome } from 'react-icons/fa'
 
 const App = () => {
-    const { response } = useUser({
-        method: 'get',
-        url: '/session',
-        withCredentials: true,
+    const { data, error, isError, isSuccess } = useQuery({
+        queryKey: ['user'],
+        queryFn: getUserFn,
     })
+    const { setNewUser } = userStore()
+
+    if (isError) {
+        console.log('error', error)
+    }
+
+    if (isSuccess) {
+        console.log('success', data)
+    }
+
+    useEffect(() => {
+        setNewUser(data?.username)
+    }, [data])
 
     return (
         <Router>
-            <div className="w-full p-4 bg-gray-600 font-Roboto">
-                <header className="flex justify-between text-xl font-medium tracking-wider text-white">
-                    <h1>Focus Frontend Interview Exercise</h1>
-                    {response?.data ? <p>{response?.data?.username}</p> : null}
-                </header>
-                <nav className="text-base tracking-wider text-white">
-                    <Link to="/" className="hover:text-white/80">
-                        Home |
+            <header className="flex justify-between w-full p-4 bg-gray-600 font-Roboto">
+                <div className="flex items-center justify-center w-1/5">
+                    <Link to="/" className="text-gray-300 hover:text-blue-200">
+                        <FaHome size={24} />
                     </Link>
-                    <Link to="/states" className="hover:text-white/80">
-                        {' '}
-                        States Search Example |
-                    </Link>
-                    <Link to="/trade" className="hover:text-white/80">
-                        {' '}
-                        Interstate Trade Search |
-                    </Link>
-                    <Link to="/economy" className="hover:text-white/80">
-                        {' '}
-                        State Economy Search |
-                    </Link>
+                </div>
+                <div className="flex flex-col items-center justify-center w-2/3">
+                    <div className="flex justify-between gap-2 text-xl font-medium tracking-wider text-white">
+                        <h1>Focus Frontend Interview Exercise</h1>
+                        {data?.username ? (
+                            <p className="font-normal text-gray-200">
+                                |{' '}
+                                <span className="italic">
+                                    Hello, {data?.username}
+                                </span>
+                            </p>
+                        ) : null}
+                    </div>
+                    <nav className="flex gap-12 tracking-wider text-gray-300 justify-betweentext-base">
+                        <Link to="/states" className="hover:text-blue-200">
+                            {' '}
+                            States Search Example
+                        </Link>
+                        <Link to="/trade" className="hover:text-blue-200">
+                            {' '}
+                            Interstate Trade Search
+                        </Link>
+                        <Link to="/economy" className="hover:text-blue-200">
+                            {' '}
+                            State Economy Search
+                        </Link>
+                    </nav>
+                </div>
 
-                    <Link to="/login" className="hover:text-white/80">
+                <div className="flex items-center justify-center w-1/5">
+                    <Link
+                        to="/login"
+                        className="text-base font-medium text-gray-300 hover:text-blue-200"
+                    >
                         {' '}
-                        Login |
+                        Login
                     </Link>
-                    <Link to="/signup" className="hover:text-white/80">
+                    <Link
+                        to="/signup"
+                        className="inline-flex items-center justify-center px-4 py-2 ml-8 text-base font-medium text-white bg-blue-500 border border-transparent rounded-md shadow-sm hover:bg-blue-600 hover:text-white/80"
+                    >
                         {' '}
                         Signup
                     </Link>
-                </nav>
-            </div>
+                </div>
+            </header>
             <main className="w-full p-4 bg-white">
                 <Routes>
                     <Route path="/" element={<Home />} />
